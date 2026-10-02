@@ -12,13 +12,13 @@ class FindBar extends HTMLElement {
     }
 
     window.findOverlay.onResult(r => this.onResult(r))
-    window.findOverlay.onOpen(() => this.onOpen())
+    window.findOverlay.onShow(() => this.onShow())
 
     this.dom.input.addEventListener('input', () => this.onInput())
     this.dom.input.addEventListener('keydown', e => this.onKeydown(e))
     this.dom.prev.addEventListener('click', () => this.find(false))
     this.dom.next.addEventListener('click', () => this.find(true))
-    this.dom.close.addEventListener('click', () => window.findOverlay.close())
+    this.dom.close.addEventListener('click', () => window.findOverlay.hide())
   }
 
   render(active, total) {
@@ -32,7 +32,7 @@ class FindBar extends HTMLElement {
     this.render(r.activeMatchOrdinal, r.matches)
   }
 
-  onOpen() {
+  onShow() {
     this.dom.input.focus()
     this.dom.input.select()
   }
@@ -46,13 +46,13 @@ class FindBar extends HTMLElement {
 
   onKeydown(e) {
     if (e.key === 'Enter') { e.preventDefault(); this.find(!e.shiftKey) }
-    else if (e.key === 'Escape') { e.preventDefault(); window.findOverlay.close() }
+    else if (e.key === 'Escape') { e.preventDefault(); window.findOverlay.hide() }
   }
 
   // findNext:true reports the first match of a new query (findNext:false searches silently) and
   // continues the session on repeats — so it serves both the initial search and next/prev nav.
   find(forward) {
-    if (this.dom.input.value) window.findOverlay.query(this.dom.input.value, { forward, findNext: true })
+    if (this.dom.input.value) window.findOverlay.find(this.dom.input.value, { forward, findNext: true })
   }
 }
 

@@ -26,9 +26,9 @@ export class FindOverlay extends EventEmitter {
     if (css) contents.on('dom-ready', () => contents.insertCSS(css))
     contents.loadFile(path.join(import.meta.dirname, 'renderer/find.html'))
 
-    contents.ipc.on('find-overlay:query', (_e, text, options) => this.target.findInPage(text, options))
+    contents.ipc.on('find-overlay:find', (_e, text, options) => this.target.findInPage(text, options))
     contents.ipc.on('find-overlay:stop', () => this.stop())
-    contents.ipc.on('find-overlay:close', () => this.hide())
+    contents.ipc.on('find-overlay:hide', () => this.hide())
 
     this.target.on('found-in-page', (_e, result) => contents.send('find-overlay:result', result))
     win.on('resize', () => { if (this.visible) this.layout() })
@@ -52,8 +52,8 @@ export class FindOverlay extends EventEmitter {
     this.#visible = true
     this.view.setVisible(true)
     contents.focus()
-    const open = () => contents.send('find-overlay:open')
-    contents.isLoading() ? contents.once('did-finish-load', open) : open()
+    const notify = () => contents.send('find-overlay:show')
+    contents.isLoading() ? contents.once('did-finish-load', notify) : notify()
     this.emit('show')
   }
 

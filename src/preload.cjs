@@ -6,9 +6,9 @@ const { contextBridge, ipcRenderer } = require('electron')
 const on = channel => cb => { ipcRenderer.on(channel, (_e, payload) => cb(payload)) }
 
 contextBridge.exposeInMainWorld('findOverlay', {
-  query: (text, options) => ipcRenderer.send('find-overlay:query', text, options),
+  find: (text, options) => ipcRenderer.send('find-overlay:find', text, options),
   stop: () => ipcRenderer.send('find-overlay:stop'),
-  close: () => ipcRenderer.send('find-overlay:close'),
-  onOpen: on('find-overlay:open'),
+  hide: () => ipcRenderer.send('find-overlay:hide'),
+  onShow: on('find-overlay:show'),
   onResult: on('find-overlay:result')
 })
