@@ -52,15 +52,19 @@ find.on('hide', fn)     // the bar closed
 
 ## Styling
 
-Pass `css` to restyle the bar. The built-in styles sit in a cascade layer, so your rules win without `!important`.
+The bar is light or dark to match `prefers-color-scheme`, which in Electron follows `nativeTheme.themeSource` (the OS by default).
+
+Pass `css` to restyle it. The built-in styles sit in a cascade layer, so your rules win without `!important`.
 
 ```js
 new FindOverlay(win, {
   css: `:root {
-    --find-bg: #fff;
-    --find-border: #dadce0;
-    --find-text: #202124;
-    --find-text-dim: #5f6368;
+    --find-bg: #1e1e2e;
+    --find-border: #45475a;
+    --find-text: #cdd6f4;
+    --find-text-dim: #a6adc8;
+    --find-hover: rgba(255, 255, 255, 0.08);
+    --find-shadow: rgba(0, 0, 0, 0.4);
     --find-font: system-ui, sans-serif;
   }`,
 })
