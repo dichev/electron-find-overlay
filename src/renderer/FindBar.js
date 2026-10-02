@@ -1,6 +1,4 @@
-// Find bar UI, rendered in its own overlay view so the input is NOT part of the searched page:
-// findInPage runs on the target page only (no self-match), and focusing this input never
-// touches the target's find anchor — so navigation advances and typing keeps focus.
+// The bar's UI; searches run in the main process through the preload's window.findOverlay.
 export class FindBar {
   constructor() {
     this.dom = {
@@ -12,7 +10,6 @@ export class FindBar {
     }
 
     this.lastId = 0   // requestId is monotonic; drop stale results from superseded keystrokes
-    this.timer = null
 
     window.findOverlay.onResult(r => this.onResult(r))
     window.findOverlay.onOpen(() => this.onOpen())
@@ -30,9 +27,9 @@ export class FindBar {
   }
 
   onResult(r) {
-    if (r.id < this.lastId) return
-    this.lastId = r.id
-    this.render(r.active, r.total)
+    if (r.requestId < this.lastId) return
+    this.lastId = r.requestId
+    this.render(r.activeMatchOrdinal, r.matches)
   }
 
   onOpen() {

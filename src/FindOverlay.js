@@ -1,9 +1,6 @@
 import { WebContentsView } from 'electron'
 import { EventEmitter } from 'node:events'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // A find bar drawn as an overlay view (own web contents) on top of the window's page.
 // Keeping its input out of the searched page means findInPage never matches the box itself
@@ -17,12 +14,7 @@ export class FindOverlay extends EventEmitter {
     this.target = webContents
     this.size = { width, height, margin }
     this.view = new WebContentsView({
-      webPreferences: {
-        preload: path.join(__dirname, 'preload.cjs'),
-        contextIsolation: true,
-        nodeIntegration: false,
-        sandbox: true
-      }
+      webPreferences: { preload: path.join(import.meta.dirname, 'preload.cjs') } // sandboxed and isolated by default
     })
     this.view.setBackgroundColor('#00000000') // transparent; the bar draws its own rounded box
     this.view.setVisible(false)
@@ -32,16 +24,13 @@ export class FindOverlay extends EventEmitter {
     contents.on('will-navigate', e => e.preventDefault())
     contents.setWindowOpenHandler(() => ({ action: 'deny' }))
     if (css) contents.on('dom-ready', () => contents.insertCSS(css))
-    contents.loadFile(path.join(__dirname, 'renderer/find.html'))
+    contents.loadFile(path.join(import.meta.dirname, 'renderer/find.html'))
 
     contents.ipc.on('find-overlay:query', (_e, text, options) => this.target.findInPage(text, options))
     contents.ipc.on('find-overlay:stop', () => this.stop())
     contents.ipc.on('find-overlay:close', () => this.hide())
 
-    // results come from the searched page's find — forward them to the overlay
-    this.target.on('found-in-page', (_e, r) => {
-      contents.send('find-overlay:result', { active: r.activeMatchOrdinal, total: r.matches, id: r.requestId })
-    })
+    this.target.on('found-in-page', (_e, result) => contents.send('find-overlay:result', result))
     win.on('resize', () => { if (this.visible) this.layout() })
     win.once('closed', () => contents.close()) // a view's web contents outlive its window unless closed
   }
