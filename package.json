@@ -4,11 +4,14 @@
   "description": "A find-in-page bar for Electron, drawn as an overlay view inside the window",
   "type": "module",
   "exports": "./src/FindOverlay.js",
+  "files": [
+    "src"
+  ],
   "peerDependencies": {
     "electron": ">=30"
   },
   "scripts": {
-    "test": "electron test/main.js"
+    "start": "electron example/main.js"
   },
   "devDependencies": {
     "electron": "^44.5.1"

@@ -27,7 +27,7 @@ class FindBar extends HTMLElement {
   }
 
   onResult(r) {
-    if (r.requestId < this.lastId) return
+    if (r.requestId < this.lastId || !this.dom.input.value) return
     this.lastId = r.requestId
     this.render(r.activeMatchOrdinal, r.matches)
   }

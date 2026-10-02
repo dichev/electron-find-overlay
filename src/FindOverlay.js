@@ -31,12 +31,16 @@ export class FindOverlay extends EventEmitter {
     contents.loadFile(path.join(import.meta.dirname, 'renderer/find.html'))
 
     contents.ipc.on('find-overlay:find', (_e, text, options) => this.#target.findInPage(text, options))
-    contents.ipc.on('find-overlay:stop', () => this.#stop())
+    contents.ipc.on('find-overlay:stop', () => this.#target.stopFindInPage('clearSelection'))
     contents.ipc.on('find-overlay:hide', () => this.hide())
 
-    this.#target.on('found-in-page', (_e, result) => contents.send('find-overlay:result', result))
+    const forward = (_e, result) => contents.send('find-overlay:result', result)
+    this.#target.on('found-in-page', forward)
     win.on('resize', () => { if (this.visible) this.#layout() })
-    win.once('closed', () => contents.close()) // a view's web contents outlive its window unless closed
+    win.once('closed', () => {
+      this.#target.off('found-in-page', forward) // the target may outlive the window
+      contents.close() // a view's web contents outlive its window unless closed
+    })
   }
 
   get visible() { return this.#visible }
@@ -46,8 +50,6 @@ export class FindOverlay extends EventEmitter {
     const [w] = this.#win.getContentSize()
     this.#view.setBounds({ x: Math.max(0, w - width - margin), y: margin, width, height })
   }
-
-  #stop() { this.#target.stopFindInPage('clearSelection') }
 
   show() {
     const contents = this.#view.webContents
@@ -66,7 +68,7 @@ export class FindOverlay extends EventEmitter {
     if (!this.visible) return
     this.#visible = false
     this.#view.setVisible(false)
-    this.#stop()
+    this.#target.stopFindInPage('keepSelection') // like Chrome: the active match stays selected
     this.#target.focus()
     this.emit('hide')
   }
