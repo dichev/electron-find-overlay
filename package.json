@@ -1,6 +1,6 @@
 {
   "name": "electron-find-overlay",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A Ctrl+F find bar for Electron apps, using the browser's native search. It floats over the page, so it never finds its own search text",
   "keywords": [
     "electron",
