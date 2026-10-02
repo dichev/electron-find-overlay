@@ -12,7 +12,7 @@ class FindBar extends HTMLElement {
     }
 
     window.findOverlay.onResult(r => this.onResult(r))
-    window.findOverlay.onShow(() => this.onShow())
+    window.findOverlay.onShow(reopened => this.onShow(reopened))
 
     this.dom.input.addEventListener('input', () => this.onInput())
     this.dom.input.addEventListener('keydown', e => this.onKeydown(e))
@@ -32,9 +32,11 @@ class FindBar extends HTMLElement {
     this.render(r.activeMatchOrdinal, r.matches)
   }
 
-  onShow() {
+  // hide() cleared the highlights, so a reopen re-runs the last query to match the count again.
+  onShow(reopened) {
     this.dom.input.focus()
     this.dom.input.select()
+    if (reopened) this.find(true)
   }
 
   // Debounced so fast typing fires one search.
@@ -52,6 +54,7 @@ class FindBar extends HTMLElement {
   // findNext:true reports the first match of a new query (findNext:false searches silently) and
   // continues the session on repeats — so it serves both the initial search and next/prev nav.
   find(forward) {
+    clearTimeout(this.timer) // a pending debounced search would advance past the match just found
     if (this.dom.input.value) window.findOverlay.find(this.dom.input.value, { forward, findNext: true })
   }
 }

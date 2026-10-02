@@ -47,14 +47,15 @@ export class FindOverlay extends EventEmitter {
 
   show() {
     const contents = this.view.webContents
+    const reopened = !this.visible
     this.win.contentView.addChildView(this.view) // re-adding raises it above views added since
     this.layout()
     this.#visible = true
     this.view.setVisible(true)
     contents.focus()
-    const notify = () => contents.send('find-overlay:show')
+    const notify = () => contents.send('find-overlay:show', reopened)
     contents.isLoading() ? contents.once('did-finish-load', notify) : notify()
-    this.emit('show')
+    if (reopened) this.emit('show')
   }
 
   hide() {
