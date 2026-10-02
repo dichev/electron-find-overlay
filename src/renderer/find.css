@@ -8,28 +8,17 @@
     --find-text-dim: #9aa0a6;
     --find-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
-  * {
-    box-sizing: border-box;
-  }
-  html, body {
-    margin: 0;
-    height: 100%;
-    background: transparent;
-    overflow: hidden;
-  }
   body {
-    font-family: var(--find-font);
-    font-size: 13px;
-    color: var(--find-text);
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
+    margin: 0;
     padding: 4px;
+    overflow: hidden;
+    font: 13px var(--find-font);
+    color: var(--find-text);
   }
   .find-bar {
     display: flex;
     align-items: center;
-    width: 100%;
+    box-sizing: border-box;
     height: 40px;
     padding: 0 4px 0 12px;
     background: var(--find-bg);
@@ -41,17 +30,17 @@
     flex: 1;
     min-width: 0;
     background: transparent;
-    color: var(--find-text);
+    color: inherit;
     border: none;
     padding: 0;
-    font-size: 13px;
+    font: inherit;
     outline: none;
 
     &::placeholder {
       color: var(--find-text-dim);
     }
   }
-  .count {
+  #count {
     flex-shrink: 0;
     padding: 0 10px;
     font-size: 12px;
@@ -73,12 +62,11 @@
     width: 28px;
     height: 28px;
     margin: 0 1px;
+    padding: 0;
     background: transparent;
     color: var(--find-text-dim);
     border: none;
     border-radius: 50%;
-    font-size: 15px;
-    line-height: 1;
     cursor: pointer;
 
     &:hover:not(:disabled) {
@@ -89,5 +77,12 @@
       opacity: 0.35;
       cursor: default;
     }
+  }
+  svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 }
