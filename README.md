@@ -37,9 +37,9 @@ In the bar, `Enter` / `Shift+Enter` go to the next / previous match and `Esc` cl
 const find = new FindOverlay(win, {
   webContents,          // page to search (default: win.webContents, required for a BaseWindow)
   css,                  // extra CSS, see Styling
-  width: 320,           // overlay size in px
-  height: 56,
-  margin: 6,            // gap from the top-right corner in px
+  width: 320,           // overlay size in px, with room for the shadow
+  height: 60,
+  offset: 5,            // distance from the top-right corner in px
 })
 
 find.show()             // open the bar and focus the input
@@ -51,7 +51,13 @@ find.on('hide', fn)     // the bar closed
 
 ## Styling
 
-The bar is light or dark to match `prefers-color-scheme`, which in Electron follows `nativeTheme.themeSource` (the OS by default).
+The bar follows `prefers-color-scheme`. Switch it with `nativeTheme`, which sets the theme for the whole app:
+
+```js
+import { nativeTheme } from 'electron'
+
+nativeTheme.themeSource = 'dark'   // 'light', 'dark', or 'system' (default, follows the OS)
+```
 
 Pass `css` to restyle it. The built-in styles sit in a cascade layer, so your rules win without `!important`.
 
@@ -61,15 +67,21 @@ new FindOverlay(win, {
     --find-bg: #1e1e2e;
     --find-border: #45475a;
     --find-text: #cdd6f4;
-    --find-text-dim: #a6adc8;
-    --find-hover: rgba(255, 255, 255, 0.08);
+    --find-text-muted: #a6adc8;
     --find-shadow: rgba(0, 0, 0, 0.4);
-    --find-font: system-ui, sans-serif;
   }`,
 })
 ```
 
-Elements: `find-bar`, `#q` (input), `#count`, `.divider`, `#prev`, `#next`, `#close`.
+Or use a CSS file. Read it in main, since the bar is its own web contents and your page's CSS doesn't reach it:
+
+```js
+import fs from 'node:fs'
+
+new FindOverlay(win, {
+  css: fs.readFileSync(new URL('find-theme.css', import.meta.url), 'utf8'),
+})
+```
 
 ## License
 

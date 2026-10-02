@@ -12,11 +12,11 @@ export class FindOverlay extends EventEmitter {
   #size
   #visible = false
 
-  constructor(win, { webContents = win.webContents, css, width = 320, height = 56, margin = 6 } = {}) {
+  constructor(win, { webContents = win.webContents, css, width = 320, height = 60, offset = 5 } = {}) {
     super()
     this.#win = win
     this.#target = webContents
-    this.#size = { width, height, margin }
+    this.#size = { width, height, offset }
     this.#view = new WebContentsView({
       webPreferences: { preload: path.join(import.meta.dirname, 'preload.cjs') } // sandboxed and isolated by default
     })
@@ -46,9 +46,9 @@ export class FindOverlay extends EventEmitter {
   get visible() { return this.#visible }
 
   #layout() {
-    const { width, height, margin } = this.#size
+    const { width, height, offset } = this.#size
     const [w] = this.#win.getContentSize()
-    this.#view.setBounds({ x: Math.max(0, w - width - margin), y: margin, width, height })
+    this.#view.setBounds({ x: Math.max(0, w - width - offset), y: offset, width, height })
   }
 
   show() {
