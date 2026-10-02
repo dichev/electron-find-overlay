@@ -1,19 +1,48 @@
 {
   "name": "electron-find-overlay",
   "version": "0.1.0",
-  "description": "A find-in-page bar for Electron, drawn as an overlay view inside the window",
-  "type": "module",
-  "exports": "./src/FindOverlay.js",
-  "files": [
-    "src"
+  "description": "A Ctrl+F find bar for Electron apps, using the browser's native search. It floats over the page, so it never finds its own search text",
+  "keywords": [
+    "electron",
+    "find",
+    "find-in-page",
+    "findinpage",
+    "native-search",
+    "browser-search",
+    "chromium",
+    "findbar",
+    "find-bar",
+    "search",
+    "search-bar",
+    "ctrl-f",
+    "overlay",
+    "webcontentsview"
   ],
-  "peerDependencies": {
-    "electron": ">=30"
+  "homepage": "https://github.com/dichev/electron-find-overlay#readme",
+  "bugs": "https://github.com/dichev/electron-find-overlay/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dichev/electron-find-overlay.git"
   },
+  "license": "MIT",
+  "author": "dichev <dichev.lab@gmail.com>",
+  "type": "module",
+  "exports": {
+    "types": "./types/index.d.ts",
+    "default": "./src/FindOverlay.js"
+  },
+  "types": "./types/index.d.ts",
+  "files": [
+    "src",
+    "types"
+  ],
   "scripts": {
     "start": "electron example/main.js"
   },
   "devDependencies": {
     "electron": "^44.5.1"
+  },
+  "peerDependencies": {
+    "electron": ">=30"
   }
 }

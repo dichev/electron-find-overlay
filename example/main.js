@@ -7,6 +7,7 @@ app.whenReady().then(() => {
 
   const find = new FindOverlay(win)
 
+  // The bar registers no shortcuts. A menu accelerator works whether the page or the bar has focus
   Menu.setApplicationMenu(Menu.buildFromTemplate([{
     label: 'Edit',
     submenu: [{ label: 'Find…', accelerator: 'CmdOrCtrl+F', click: () => find.show() }],

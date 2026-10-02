@@ -1,6 +1,11 @@
 # electron-find-overlay
 
-A find-in-page bar for Electron. It's a small overlay view in the window's top-right corner, so the search box is never part of the page being searched: `findInPage` won't match your query, and typing won't reset the current match.
+A find-in-page bar for Electron, built on the browser's native search (`webContents.findInPage`, the same engine as Chrome's Ctrl+F). 
+
+<img alt="The find bar in light mode, with matches for 'fox' highlighted" src="docs/screenshot-light.png" width="600">
+<img alt="The find bar in dark mode, with matches for 'fox' highlighted" src="docs/screenshot-dark.png" width="600">
+
+It's a small overlay view in the window's top-right corner, so the search box is never part of the page being searched: the query won't match itself, and typing won't reset the current match.
 
 ## Install
 
@@ -13,6 +18,15 @@ Requires Electron 30+. ESM-only (from CommonJS, use `await import()`).
 ## Usage
 
 ```js
+import { FindOverlay } from 'electron-find-overlay'
+
+const find = new FindOverlay(win)
+find.show()
+```
+
+A full app, with the bar opened from the menu on `Ctrl+F` / `Cmd+F`:
+
+```js
 import { app, BrowserWindow, Menu } from 'electron'
 import { FindOverlay } from 'electron-find-overlay'
 
@@ -22,6 +36,7 @@ app.whenReady().then(() => {
 
   const find = new FindOverlay(win)
 
+  // The bar registers no shortcuts. A menu accelerator works whether the page or the bar has focus
   Menu.setApplicationMenu(Menu.buildFromTemplate([{
     label: 'Edit',
     submenu: [{ label: 'Find…', accelerator: 'CmdOrCtrl+F', click: () => find.show() }],
@@ -29,7 +44,6 @@ app.whenReady().then(() => {
 })
 ```
 
-In the bar, `Enter` / `Shift+Enter` go to the next / previous match and `Esc` closes it. The bar doesn't register any shortcuts itself, so you decide how to open it.
 
 ## API
 
