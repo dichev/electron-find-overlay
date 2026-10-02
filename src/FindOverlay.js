@@ -46,11 +46,14 @@ export class FindOverlay extends EventEmitter {
   stop() { this.target.stopFindInPage('clearSelection') }
 
   show() {
+    const contents = this.view.webContents
+    this.win.contentView.addChildView(this.view) // re-adding raises it above views added since
     this.layout()
     this.#visible = true
     this.view.setVisible(true)
-    this.view.webContents.focus()
-    this.view.webContents.send('find-overlay:open')
+    contents.focus()
+    const open = () => contents.send('find-overlay:open')
+    contents.isLoading() ? contents.once('did-finish-load', open) : open()
     this.emit('show')
   }
 
