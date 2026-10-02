@@ -44,7 +44,6 @@ const find = new FindOverlay(win, {
 
 find.show()             // open the bar and focus the input
 find.hide()             // close the bar and clear the highlights
-find.stop()             // clear the highlights, keep the bar open
 find.visible            // true while the bar is open
 find.on('show', fn)     // the bar opened
 find.on('hide', fn)     // the bar closed
