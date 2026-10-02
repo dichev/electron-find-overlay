@@ -70,7 +70,7 @@ new FindOverlay(win, {
 })
 ```
 
-Elements: `.find-bar`, `#q` (input), `#count`, `.divider`, `#prev`, `#next`, `#close`.
+Elements: `find-bar`, `#q` (input), `#count`, `.divider`, `#prev`, `#next`, `#close`.
 
 ## License
 

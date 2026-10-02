@@ -22,12 +22,12 @@
   }
   body {
     margin: 0;
-    padding: 4px;
+    padding: 6px 8px 10px; /* room for the shadow: blur 8px, offset 2px down */
     overflow: hidden;
     font: 13px var(--find-font);
     color: var(--find-text);
   }
-  .find-bar {
+  find-bar {
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -36,7 +36,7 @@
     background: var(--find-bg);
     border: 1px solid var(--find-border);
     border-radius: 6px;
-    box-shadow: 0 2px 10px var(--find-shadow);
+    box-shadow: 0 2px 8px var(--find-shadow);
   }
   input {
     flex: 1;

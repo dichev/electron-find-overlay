@@ -1,15 +1,15 @@
-// The bar's UI; searches run in the main process through the preload's window.findOverlay.
-export class FindBar {
-  constructor() {
-    this.dom = {
-      input: document.getElementById('q'),
-      count: document.getElementById('count'),
-      prev:  document.getElementById('prev'),
-      next:  document.getElementById('next'),
-      close: document.getElementById('close'),
-    }
+// The <find-bar> element; searches run in the main process through the preload's window.findOverlay.
+class FindBar extends HTMLElement {
+  lastId = 0   // requestId is monotonic; drop stale results from superseded keystrokes
 
-    this.lastId = 0   // requestId is monotonic; drop stale results from superseded keystrokes
+  connectedCallback() {
+    this.dom = {
+      input: this.querySelector('#q'),
+      count: this.querySelector('#count'),
+      prev:  this.querySelector('#prev'),
+      next:  this.querySelector('#next'),
+      close: this.querySelector('#close'),
+    }
 
     window.findOverlay.onResult(r => this.onResult(r))
     window.findOverlay.onOpen(() => this.onOpen())
@@ -33,7 +33,6 @@ export class FindBar {
   }
 
   onOpen() {
-    this.lastId = 0
     this.dom.input.focus()
     this.dom.input.select()
   }
@@ -56,3 +55,5 @@ export class FindBar {
     if (this.dom.input.value) window.findOverlay.query(this.dom.input.value, { forward, findNext: true })
   }
 }
+
+customElements.define('find-bar', FindBar)

@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'" />
   <link rel="stylesheet" href="./find.css" />
-  <script type="module" src="./find.js"></script>
+  <script type="module" src="./FindBar.js"></script>
 </head>
 <body>
-  <div class="find-bar">
+  <find-bar>
     <input id="q" placeholder="Find" />
     <span id="count"></span>
     <span class="divider"></span>
@@ -20,6 +20,6 @@
     <button id="close" title="Close (Esc)">
       <svg viewBox="0 0 16 16" width="13" height="13"><path d="M4 4l8 8M12 4l-8 8"/></svg>
     </button>
-  </div>
+  </find-bar>
 </body>
 </html>
