@@ -32,7 +32,7 @@ export class FindOverlay extends EventEmitter {
     contents.on('will-navigate', e => e.preventDefault())
     contents.setWindowOpenHandler(() => ({ action: 'deny' }))
     if (css) contents.on('dom-ready', () => contents.insertCSS(css))
-    contents.loadFile(path.join(__dirname, 'find.html'))
+    contents.loadFile(path.join(__dirname, 'renderer/find.html'))
 
     contents.ipc.on('find-overlay:query', (_e, text, options) => this.target.findInPage(text, options))
     contents.ipc.on('find-overlay:stop', () => this.stop())

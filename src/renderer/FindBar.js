@@ -1,7 +1,7 @@
 // Find bar UI, rendered in its own overlay view so the input is NOT part of the searched page:
 // findInPage runs on the target page only (no self-match), and focusing this input never
 // touches the target's find anchor — so navigation advances and typing keeps focus.
-class FindBar {
+export class FindBar {
   constructor() {
     this.dom = {
       input: document.getElementById('q'),
@@ -59,5 +59,3 @@ class FindBar {
     if (this.dom.input.value) window.findOverlay.query(this.dom.input.value, { forward, findNext: true })
   }
 }
-
-new FindBar()
