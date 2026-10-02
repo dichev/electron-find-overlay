@@ -32,11 +32,10 @@ class FindBar extends HTMLElement {
     this.render(r.activeMatchOrdinal, r.matches)
   }
 
-  // hide() cleared the highlights, so a reopen re-runs the last query to match the count again.
   onShow(reopened) {
     this.dom.input.focus()
     this.dom.input.select()
-    if (reopened) this.find(true)
+    if (reopened) this.dom.count.textContent = '' // not re-run: it'd skip the kept selection (Electron lacks Chrome's scroll_to_match:false)
   }
 
   // Debounced so fast typing fires one search.
